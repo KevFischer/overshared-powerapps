@@ -9,7 +9,7 @@ foreach($app in Get-AdminPowerApp){
     $sharedWith = @()
     foreach($principal in (Get-AdminPowerAppRoleAssignment -AppName $appName -EnvironmentName $envName)){
         $sharedWith += $principal.PrincipalDisplayName
-        if(($principal.PrincipalDisplayName -eq "Jeder") -or ($principal.PrincipalDisplayName -eq "Everyone")){
+        if(($principal.PrincipalType -eq "Tenant")){
             $vulnerable = $true
             break
         }
@@ -19,7 +19,6 @@ foreach($app in Get-AdminPowerApp){
     }
     $connectors = @()
     foreach($connector in (Get-AdminPowerAppConnection -EnvironmentName $app.EnvironmentName)){
-        Write-Host $connector.ConnectorName
         if($connector.ConnectorName -in $vulnConnectors){
             $connectors += $connector.ConnectorName
         }
@@ -29,9 +28,9 @@ foreach($app in Get-AdminPowerApp){
         AppName = $appName
         EnvironmentName = $envName
         Owner = $owner
-        SharedWith = $sharedWith
         Connections = $connectors
     }
 }
 $output = $output | ConvertTo-Json -Compress | ConvertFrom-Json
+$output | Format-Table -AutoSize
 $output | Format-Table -AutoSize | Out-File o.txt

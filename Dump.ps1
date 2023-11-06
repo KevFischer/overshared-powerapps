@@ -1,5 +1,5 @@
 $output = @()
-$vulnConnectors = @("connector_base", "excelonlinebusiness","shared_github" ,"github", "gmail", "keyvault", "shared_azureblob", "shared_azurequeues", "shared_azuretables", "shared_documentdb", "shared_sql")
+$vulnConnectors = @("shared_excelonlinebusiness","shared_github", "shared_gmail", "shared_keyvault", "shared_azureblob", "shared_azurequeues", "shared_azuretables", "shared_documentdb", "shared_sql")
 foreach($app in Get-AdminPowerApp){
     $owner = $app.Owner.displayName
     $appName = $app.AppName
